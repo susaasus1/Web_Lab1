@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WebLab № 1</title>
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-size: 16px;
+            font-family: "STIX Two Math", sans-serif;
+            background-color: #E9E6EE;
+        }
+
+        #main-grid {
+            width: 100%;
+            margin: auto;
+            border-spacing: 1em;
+        }
+
+        #table-plate {
+            width: 70%;
+        }
+
+        #header-plate {
+            padding: 1em 30px;
+            font-size: 20px;
+            color: #ffffff;
+            background-color: #009999;
+        }
+
+        .content-plate {
+            padding: 0 0 20px;
+            vertical-align: top;
+            background-color: #ffffff;
+        }
+
+        .plate-top {
+            display: inline-block;
+            width: 100%;
+            margin: 0;
+            padding: 0em 0;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ffffff;
+            background-color: #009999;
+        }
+
+        .plate-top-title {
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+        .image-container {
+            text-align: center;
+        }
+
+        #input-grid {
+            width: 95%;
+            margin: auto;
+            text-align: center;
+        }
+
+        .input-grid-label {
+            width: 12%;
+            font-weight: bold;
+        }
+
+        #y-textinput {
+            width: 75%;
+            height: 20px;
+            margin: 2% 0;
+        }
+
+        .text-error {
+            border: 1px solid #ff0000;
+        }
+
+        .box-error {
+            color: #ff0000;
+        }
+
+        .text-error::placeholder {
+            color: #ff0000;
+        }
+
+        .form-subtext {
+            padding-bottom: 2%;
+            font-size: 14px;
+        }
+
+        .center-labeled {
+            display: inline-block;
+            position: relative;
+            margin: 0 1% 5%;
+            font-size: 14px;
+        }
+
+        .center-labeled label {
+            position: absolute;
+            top: 18px;
+            left: 6px;
+        }
+
+        .center-labeled .float-labeled {
+            left: 0;
+        }
+
+        .center-labeled .add-labeled {
+            left: 7px;
+        }
+
+        .buttons {
+            margin-top: 3%;
+        }
+
+        .buttons::before {
+            content: "";
+            display: block;
+            height: 2px;
+            width: 60px;
+            margin: 0 auto 4%;
+            background-color: #009999;
+        }
+
+        .button {
+            height: 27px;
+            width: 80px;
+            color: #ffffff;
+            background-color: #009999;
+            border: none;
+        }
+
+        .button:hover {
+            background-color: #513284;
+        }
+
+        #table-plate {
+            position: relative;
+        }
+
+        .scroll-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            top: 54px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+
+        #result-table {
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+
+        #result-table tr {
+            height: 2em;
+        }
+
+        #result-table tr:nth-child(2n-1) {
+            background-color: #007777;
+        }
+
+        #result-table tr:nth-child(2n):hover {
+            background-color: #e9e9e9;
+        }
+
+        #result-table tr:nth-child(2n-1):hover {
+            background-color: #bbaad8;
+        }
+
+        #result-table tr.table-header:hover {
+            background-color: #c8b5e9;
+        }
+
+        .coords-col {
+            width: 12%;
+        }
+
+        .time-col {
+            width: 25%;
+        }
+
+        .left-aligned {
+            float: left;
+            margin: 10px;
+        }
+
+        .right-aligned {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="main-grid">
+        <tr>
+            <td id="header-plate" colspan="2">
+                <span class="left-aligned">Нуруллаев Даниил Романович</span>
+                <span class="right-aligned">Группа: p3214 </br> Вариант: 14021</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="content-plate" id="graph-plate">
+                <div class="plate-top">
+                    <h2 class="plate-top-title">График</h2>
+                </div>
+                <div class="image-container">
+                    <object type="image/svg+xml" data="graphic.jpg"><img src="graphics.jpg"></object>
+                </div>
+            </td>
+
+            <td class="content-plate" id="table-plate" rowspan="2">
+                <div class="plate-top">
+                    <h2 class="plate-top-title">Таблица</h2>
+                </div>
+                <div class="scroll-container">
+                    <table id="result-table">
+                        <tr class="table-header">
+                            <th class="coords-col">X</th>
+                            <th class="coords-col">Y</th>
+                            <th class="coords-col">R</th>
+                            <th class="hitres-col">Попадание</th>
+                            <th class="time-col">Текущее время</th>
+                            <th class="time-col">Время выполнения</th>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="content-plate" id="values-plate">
+                <div class="plate-top">
+                    <h2 class="plate-top-title">Данные</h2>
+                </div>
+                <form id="input-form" action="" method="POST">
+                    <table id="input-grid">
+                        <tr>
+                            <td class="input-grid-label">
+                                <label>X:</label>
+                            </td>
+                            <td class="input-grid-value">
+                                <div class="center-labeled">
+                                    <label class="xbox-label" for="x-checkbox1">-2</label>
+                                    <input class="x-checkbox" id="x-checkbox1" type="checkbox" name="xval[]" value="-2">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="float-labeled xbox-label" for="x-checkbox2">-1.5</label>
+                                    <input class="x-checkbox" id="x-checkbox2" type="checkbox" name="xval[]"
+                                        value="-1.5">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="xbox-label" for="x-checkbox3">-1</label>
+                                    <input class="x-checkbox" id="x-checkbox3" type="checkbox" name="xval[]" value="-1">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="float-labeled xbox-label" for="x-checkbox4">-0.5</label>
+                                    <input class="x-checkbox" id="x-checkbox4" type="checkbox" name="xval[]"
+                                        value="-0.5">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="xbox-label" for="x-checkbox5">0</label>
+                                    <input class="x-checkbox" id="x-checkbox5" type="checkbox" name="xval[]" value="0">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="float-labeled xbox-label" for="x-checkbox6">0.5</label>
+                                    <input class="x-checkbox" id="x-checkbox6" type="checkbox" name="xval[]"
+                                        value="0.5">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="xbox-label" for="x-checkbox7">1</label>
+                                    <input class="x-checkbox" id="x-checkbox7" type="checkbox" name="xval[]" value="1">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="float-labeled xbox-label" for="x-checkbox8">1.5</label>
+                                    <input class="x-checkbox" id="x-checkbox8" type="checkbox" name="xval[]"
+                                        value="1.5">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="xbox-label" for="x-checkbox9">2</label>
+                                    <input class="x-checkbox" id="x-checkbox9" type="checkbox" name="xval[]" value="2">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="input-grid-label">
+                                <label for="y-textinput">Y:</label>
+                            </td>
+                            <td class="input-grid-value">
+                                <input id="y-textinput" type="text" name="yval" maxlength="10" autocomplete="on"
+                                    placeholder="Числа от -5 до 3...">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="input-grid-label">
+                                <label>R:</label>
+                            </td>
+                            <td class="input-grid-value">
+                                <div class="center-labeled">
+                                    <label class="rbox-label" for="r-checkbox1">1</label>
+                                    <input class="r-checkbox" id="r-checkbox1" type="checkbox" name="rval[]" value="1">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="rbox-label" for="r-checkbox2">2</label>
+                                    <input class="r-checkbox" id="r-checkbox2" type="checkbox" name="rval[]" value="2">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="rbox-label" for="r-checkbox3">3</label>
+                                    <input class="r-checkbox" id="r-checkbox3" type="checkbox" name="rval[]" value="3">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="rbox-label" for="r-checkbox4">4</label>
+                                    <input class="r-checkbox" id="r-checkbox4" type="checkbox" name="rval[]" value="4">
+                                </div>
+                                <div class="center-labeled">
+                                    <label class="rbox-label" for="r-checkbox5">5</label>
+                                    <input class="r-checkbox" id="r-checkbox5" type="checkbox" name="rval[]" value="5">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="buttons">
+                                    <input class="button" type="submit" id="sub" value="Отправить">
+                                    <input class="button" type="reset" value="Сбросить">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
